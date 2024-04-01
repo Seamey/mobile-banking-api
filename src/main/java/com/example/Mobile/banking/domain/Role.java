@@ -12,17 +12,18 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name="roles")
-public class Roles {
+public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
 
-    @OneToOne (mappedBy = "roles")
-    private RolesAuthority rolesAuthority;
-
     // relationship between user and roles
-    @OneToMany
+    @ManyToMany (mappedBy = "roles")
     private List<User> users;
+
+    @ManyToMany
+    private List<Authority> authorities;
+
 
 }

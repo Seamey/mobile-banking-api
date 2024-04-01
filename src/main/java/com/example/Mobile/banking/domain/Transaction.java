@@ -12,21 +12,30 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Entity
-@Table(name="transctions")
-public class Transction {
+@Table(name="transactions")
+public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    // relational is the unidirectional
+
     @ManyToOne
-    private Account sender; //return type is the Account cuz transfer acc to acc
+    private Account owner;
+
     @ManyToOne
-    private Account receiver;
+    private Account transferReceiver; // uses when transaction type is TRANSFER
+
+    private String paymentReceiver;
+
     private BigDecimal amount;
+
+    @Column(columnDefinition = "TEXT")
     private String remark;
-    private Boolean isPayment;  // isPayment true is the normal payment
-                                // isPayment is false is the transfer
+
+    @Column(nullable = false, length = 30)
+    private String transactionType; // transfer and payment
+
+    private Boolean status; // Pending, Completed, Failed
+
     private LocalDateTime transactionAt;
-    private Boolean isDeleted;
 
 }

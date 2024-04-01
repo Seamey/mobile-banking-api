@@ -17,7 +17,7 @@ public class Notification {
     private String content;
     @ManyToOne
     @JoinColumn(name="transaction_id")
-    private Transction transactionId;
+    private Transaction transactionId;
     @ManyToOne
     @JoinColumn(name="sender_id")
     private User senderId;
