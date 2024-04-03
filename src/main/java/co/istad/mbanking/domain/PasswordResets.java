@@ -16,7 +16,6 @@ import lombok.*;
 @Entity
 @Table(name = "password_resets")
 public class PasswordResets {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
