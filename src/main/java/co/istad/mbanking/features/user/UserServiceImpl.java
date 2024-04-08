@@ -157,4 +157,14 @@ public class UserServiceImpl implements UserService {
                                 "User has not been found!"));
         userRepository.delete(user);
     }
+
+    @Override
+    public String updateProfileImage(String uuid, String mediaName) {
+        User user = userRepository.findByUuid(uuid)
+                .orElseThrow(()->  new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "User has not been found!"));
+        user.setProfileImage(mediaName);
+        userRepository.save(user);
+        return null;
+    }
 }

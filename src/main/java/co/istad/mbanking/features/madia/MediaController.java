@@ -4,7 +4,9 @@ import co.istad.mbanking.features.madia.dto.MediaResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -48,9 +50,19 @@ public class MediaController {
                     e.getLocalizedMessage());
         }
     }
-    @GetMapping("/download/{fileName}")
-    public ResponseEntity<Resource> downloadMediaByName( @PathVariable String fileName) {
-        return mediaService.dowloadByName("IMAGE", fileName);
+//    @GetMapping("/download/{fileName}")
+//    public ResponseEntity<Resource> downloadMediaByName( @PathVariable String fileName) {
+//        return mediaService.dowloadByName("IMAGE", fileName);
+//    }
+    @GetMapping(value = {"/{mediaName}/download", "/download/{mediaName}"},produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    // produce = header Acc    //consumes = Content-Typeept
+    ResponseEntity<Resource> downloadMediaByName(@PathVariable String mediaName){
+        Resource resource = mediaService.downloadMediaByName(mediaName,"IMAGE");
+        HttpHeaders headers = new HttpHeaders();
+        headers.set(HttpHeaders.CONTENT_DISPOSITION,"attachment ; filename=" + mediaName);
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(resource);
     }
 
 }

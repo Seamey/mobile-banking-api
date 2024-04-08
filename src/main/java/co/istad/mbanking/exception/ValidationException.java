@@ -1,5 +1,7 @@
 package co.istad.mbanking.exception;
 
+import co.istad.mbanking.base.BaseError;
+import co.istad.mbanking.base.BasedErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -16,7 +18,9 @@ public class ValidationException {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Map<String, Object> handleValidationErrors(MethodArgumentNotValidException ex) {
+    BasedErrorResponse handleValidationErrors(MethodArgumentNotValidException ex) {
+
+        BaseError<List<?>> baseError = new BaseError<>();
 
         List<Map<String, Object>> errors = new ArrayList<>();
 
@@ -28,7 +32,10 @@ public class ValidationException {
                     errors.add(error);
                 });
 
-        return Map.of("errors", errors);
+        baseError.setCode(HttpStatus.BAD_GATEWAY.getReasonPhrase());
+        baseError.setDescription(errors);
+
+        return new BasedErrorResponse(baseError);
     }
 
 }

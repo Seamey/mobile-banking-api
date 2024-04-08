@@ -20,5 +20,7 @@ public interface MediaService {
     MediaResponse deleteMediaByName(String mediaName, String folderName);
     List<MediaResponse> loadAllMedias(String folderName) throws IOException;
     ResponseEntity<Resource> dowloadByName(String folderName, String filename);
+    Resource downloadMediaByName(String mediaName, String folderName);
+
 
 }

@@ -150,9 +150,8 @@ public class MediaServiceImpl implements MediaService {
                     }
                     MediaResponse mediaResponse = MediaResponse.builder()
                             .name(mediaName)
-                            .contentType(Files.probeContentType(media))
-                            .extension(MediaUtil.extractExtension(mediaName))
-                            .uri(String.format("%s%s/%s", baseUri, folderName, mediaName))
+                            .contentType(Files.probeContentType(media)).extension(MediaUtil.extractExtension(mediaName))
+                            .uri(String.format("%s/%s", baseUri, mediaName))
                             .size(resource.contentLength())
                             .build();
                     mediaResponses.add(mediaResponse);
@@ -192,10 +191,21 @@ public class MediaServiceImpl implements MediaService {
             }
         }catch (MalformedURLException e)
         {
-            e.printStackTrace();
+            e.getLocalizedMessage();
         }
         return null;
     }
 
+    @Override
+    public Resource downloadMediaByName(String mediaName, String folderName) {
+        Path path = Paths.get(serverPath + folderName +"\\" +mediaName);
+        try {
+            Resource resource = new UrlResource(path.toUri());
+            return resource;
+        }catch ( MalformedURLException e){
+            e.getLocalizedMessage();
+        };
 
+        return null;
+    }
 }
