@@ -5,6 +5,7 @@ import co.istad.mbanking.domain.User;
 import co.istad.mbanking.domain.UserAccount;
 import co.istad.mbanking.features.account.dto.AccountCreateRequest;
 import co.istad.mbanking.features.account.dto.AccountResponse;
+import co.istad.mbanking.features.account.dto.AccountSnippetResponse;
 import co.istad.mbanking.features.user.dto.UserResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -21,12 +22,13 @@ import java.util.List;
         AccountTypeMapper.class
 })
 public interface AccountMapper {
-    Account fromAccountCreateRequest(AccountCreateRequest accountCreateRequest);
+//    Account fromAccountCreateRequest(AccountCreateRequest accountCreateRequest);
 
     // use for make sure for Mapping know userAccountList(cuz change name) target
     // Noted make sure the name is the SAME the properties
-//   @Mapping(source = "userAccountList", target ="user",qualifiedByName = "mapUserResponse")
-   AccountResponse toAccountResponse(Account account);
+//   @Mapping(source = "userAccountList", target = "user",qualifiedByName = "mapUserResponse")
+//    @Mapping(source ="userAccountList" , target = "user", qualifiedByName = "mapUserResponse")
+//    AccountResponse toAccountResponse(Account account);
 
 
 //
@@ -44,4 +46,14 @@ public interface AccountMapper {
 
     /// if you want to use mapper del mean hz you need to move source to source target to target
     // like move User to UserMapper , Accout to AccoutMapper
+
+
+
+    Account fromAccountCreateRequest(AccountCreateRequest accountCreateRequest);
+
+    @Mapping(source = "userAccountList", target = "user",
+            qualifiedByName = "mapUserResponse")
+    AccountResponse toAccountResponse(Account account);
+
+    AccountSnippetResponse toAccountSnippet(Account account);
 }

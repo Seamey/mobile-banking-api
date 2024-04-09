@@ -27,7 +27,7 @@ public interface UserMapper {
     //@Beanapping : use for ignore some ponit that null if null ignore them
     // map only have value(cuz we using patch so some part can be null it called partially update)
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    void fromUserUpdateRequest(UserUpdateRequest userUpdateRequest, @MappingTarget User user);
+    void fromUserUpdateRequest( UserUpdateRequest userUpdateRequest,@MappingTarget User user);
 
     UserResponse toUserResponse(User user);
 
@@ -36,10 +36,16 @@ public interface UserMapper {
 
     // use that cuz want to borrow the UserResponse toUserResponse(User user); tobe the logic
     //
-    @Named("mapUserResponse")
+
 //  custom for get data in user from UserAccount ( cuz user and acc has relationship)
-    default UserResponse mapUserResponse(List<UserAccount> userAccountList){ // parameter is the source get form accountModel so need to has feild (datatype and name is the same)the same model
+ // parameter is the source get form accountModel so need to has feild (datatype and name is the same)the same model
+    @Named("mapUserResponse")
+    default UserResponse mapUserResponse(List<UserAccount> userAccountList) {
+        // YOUR LOGIC OF MAPPING HERE...
         return toUserResponse(userAccountList.get(0).getUser());
-        // get(0) cuz get single row's user cuz all object of user is the same
+            // get(0) cuz get single row's user cuz all object of user is the same
+
     }
+
+
 }

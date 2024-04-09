@@ -106,7 +106,7 @@ public class UserServiceImpl implements UserService {
 
         log.info("before user: {}", user);
 
-        userMapper.fromUserUpdateRequest(userUpdateRequest, user);
+        userMapper.fromUserUpdateRequest(userUpdateRequest,user);
 
 
         user = userRepository.save(user);

@@ -13,8 +13,8 @@ public record AccountCreateRequest(
         BigDecimal balance,
         @NotBlank(message = "Account Type is required")
                 // but when u use it to object is u make dto tobe public
-        String accountTypeAlias,
-        String userUUid,/// = relationship between account and acccunt type but it not the object form
+        String accountTypeAlias,/// = relationship between account and account type but it not the object form
+        String userUUid,
         String cardNumber/// if user create account type card
 
 

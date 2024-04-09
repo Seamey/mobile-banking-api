@@ -12,6 +12,7 @@ import co.istad.mbanking.features.accounttype.AccountTypeRepository;
 import co.istad.mbanking.features.user.UserRepository;
 import co.istad.mbanking.features.user.dto.UserResponse;
 import co.istad.mbanking.mapper.AccountMapper;
+import co.istad.mbanking.util.RandomUtils;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -35,24 +36,29 @@ public class AccountServiceImpl implements AccountService{
     private final AccountMapper accountMapper;
 
     @Override
-    public void createNew(AccountCreateRequest request) {
-        //check acc type
-        AccountType accountType = accountTypeRepository.findByAlias(request.alias())
-                .orElseThrow(()->
-                        new ResponseStatusException(HttpStatus.NOT_FOUND, "Invalid account type"
-                        )
-                       );
-        // check user uuid
-        User user = userRepository.findByUuid(request.userUUid()).orElseThrow(()->
-                new ResponseStatusException(HttpStatus.NOT_FOUND,"User has been found!"));
-        // map acc dto to acc type
-        Account account = accountMapper.fromAccountCreateRequest(request);
-                account.setAccountType(accountType);
-                account.setActName(user.getName());
-                account.setActNo("123456789");
-                account.setTransferLimit(BigDecimal.valueOf(5000));
-                account.setIsHidden(false);
+    public void createNew(AccountCreateRequest accountCreateRequest) {
 
+        // check account type
+        AccountType accountType = accountTypeRepository.findByAlias(accountCreateRequest.accountTypeAlias())
+                .orElseThrow(() ->
+                        new ResponseStatusException(HttpStatus.NOT_FOUND,
+                                "Invalid account type"));
+
+        // check user by UUID
+        User user = userRepository.findByUuid(accountCreateRequest.userUUid())
+                .orElseThrow(() ->
+                        new ResponseStatusException(HttpStatus.NOT_FOUND,
+                                "User has not been found"));
+
+        // map account dto to account entity
+        Account account = accountMapper.fromAccountCreateRequest(accountCreateRequest);
+        account.setAccountType(accountType);
+        account.setActName(user.getName());
+        account.setActNo(RandomUtils.generate9digit());
+        account.setTransferLimit(BigDecimal.valueOf(5000));
+        account.setIsHidden(false);
+
+        accountRepository.save(account);
 
         UserAccount userAccount = new UserAccount();
         userAccount.setAccount(account);
@@ -61,11 +67,9 @@ public class AccountServiceImpl implements AccountService{
         userAccount.setIsBlocked(false);
         userAccount.setCreatedAt(LocalDateTime.now());
 
-
-        // if you not use cachate you need to save user 1 and save userAccount 1
         userAccountRepository.save(userAccount);
-
     }
+
 
     @Override
     public AccountResponse findByAccountactNo(String actNo) {

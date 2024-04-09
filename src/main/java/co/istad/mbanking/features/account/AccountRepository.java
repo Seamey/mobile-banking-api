@@ -21,4 +21,5 @@ public interface AccountRepository extends JpaRepository<Account,Long> {
 """)
     void hideAccountByActNo(String actNo);
 
+
 }

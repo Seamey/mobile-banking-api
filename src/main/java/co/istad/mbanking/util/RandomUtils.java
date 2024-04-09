@@ -1,11 +1,11 @@
 package co.istad.mbanking.util;
 
+import java.util.Random;
+
 public class RandomUtils {
-    String generate9digit(){
-        String result = "";
-        for (long i = 1; i <= 999999999; i++) {
-            result = String.format("%09d\n",i);
-        }
-        return result;
+  public static String generate9digit(){
+      Random random = new Random();
+      return String.format("%09d", random.nextInt(1000000000));
+
     }
 }
