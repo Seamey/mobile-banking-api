@@ -29,5 +29,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Modifying
     @Query("UPDATE User AS u SET u.isBlocked = TRUE WHERE u.uuid = ?1")
     void blockByUuid(String uuid);
+    // user in spring security for find username to login
+    Optional<User> findByPhoneNumber(String phoneNumber);
 
 }

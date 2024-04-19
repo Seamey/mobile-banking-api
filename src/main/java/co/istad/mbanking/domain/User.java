@@ -85,7 +85,7 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<UserAccount> userAccountList;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER) // use for jdbc get it field many to many
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
@@ -95,4 +95,9 @@ public class User {
     private Boolean isBlocked; // manage block status (when there is bad action happened)
 
     private LocalDateTime createdAt;
+    // for spring security  // all of boolean(4) type need true terb vea work
+   private boolean isAccountNonExpired;
+   private boolean isAccountNonLocked;
+   private boolean isCredentialsNonExpired;
+//   private boolean isEnabled; // this one have in UserDetails but we can use isDeleted for do this
 }

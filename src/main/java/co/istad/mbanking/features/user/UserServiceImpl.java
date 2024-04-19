@@ -72,6 +72,11 @@ public class UserServiceImpl implements UserService {
         user.setCreatedAt(LocalDateTime.now());
         user.setIsBlocked(false);
         user.setIsDeleted(false);
+        // set for use in spring security  // need true to work
+        user.setAccountNonExpired(true);
+        user.setAccountNonLocked(true);
+        user.setCredentialsNonExpired(true);
+
 
         // Assign default user role
         List<Role> roles = new ArrayList<>();
