@@ -45,12 +45,13 @@ public class SecurityConfig {
                 request  // mean this endpoint can request if has roles admin
                         //.requestMatchers("/api/v1/users/**").hasRole("admin")
                         // mean this endpoint can delete if has roles admin
-                        .requestMatchers(HttpMethod.POST, "/api/v1/users/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/api/v1/users/**").permitAll()
                         .requestMatchers(HttpMethod.DELETE, "/api/v1/users/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/api/v1/users/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST,"/api/v1/accounts/**").hasAnyRole("STAFF","CUSTOMER","USER")
                         .requestMatchers(HttpMethod.DELETE,"/api/v1/accounts/**").hasAnyRole("STAFF","ADMIN")
                         .requestMatchers(HttpMethod.PUT,"/api/v1/medias/**").hasAnyRole("STAFF","CUSTOMER")
+                        .requestMatchers(HttpMethod.GET,"/api/v1/users/**").permitAll()
 
                         .anyRequest()
                         .authenticated()
