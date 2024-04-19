@@ -17,7 +17,5 @@ public record AccountCreateRequest(
         String userUUid,
         String cardNumber/// if user create account type card
 
-
-
 ) {
 }

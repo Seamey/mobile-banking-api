@@ -70,7 +70,6 @@ public class AccountServiceImpl implements AccountService{
         userAccountRepository.save(userAccount);
     }
 
-
     @Override
     public AccountResponse findByAccountactNo(String actNo) {
         Account account = accountRepository.findByActNo(actNo)
@@ -107,7 +106,7 @@ public class AccountServiceImpl implements AccountService{
 
     @Override
     public AccountResponse renameByActNo(String actNo, AccountRenameRequest renameRequest) {
-        // check actN if exists
+        // check actNo if exists
         Account account = accountRepository.findByActNo(actNo)
                 .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         "Account has not been found"));
