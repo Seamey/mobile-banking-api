@@ -6,10 +6,12 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import co.istad.mbanking.domain.User;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -22,7 +24,17 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return user.getRoles();
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+
+        user.getRoles().forEach(roles->
+        {
+            authorities.add(new SimpleGrantedAuthority(roles.getAuthority()));
+            roles.getAuthorities().forEach((authority -> {
+                new SimpleGrantedAuthority(authority.getName()
+                );
+            }));
+        });
+        return authorities;
     }
 
     @Override
